@@ -1,0 +1,66 @@
+module.exports = function(gulp, speck) {
+  return gulp.task('js:main', function() {
+    var browserify = require('browserify'),
+      watchify = require('watchify'),
+      envify = require('envify/custom'),
+      to5ify = require('6to5ify'),
+      collapse = require('bundle-collapser/plugin'),
+      source = require('vinyl-source-stream'),
+      streamify = require('gulp-streamify'),
+      sourcemaps = require('gulp-sourcemaps'),
+      notify = require('gulp-notify'),
+      uglify = require('gulp-uglify'),
+      stripDebug = require('gulp-strip-debug'),
+      size = require('gulp-size'),
+      insert = require('gulp-insert'),
+      gulpif = require('gulp-if');
+
+    var bundle,
+      bundler;
+
+    bundler = browserify({
+      debug: true
+    })
+      .transform(to5ify)
+      .require(speck.assets.src.js + '/main.js', {entry: true});
+
+    if (speck.build.env.optimise) {
+      bundler.plugin(collapse);
+    }
+
+    bundler.transform('brfs')
+      .transform(envify({
+        config: speck.config,
+        build: speck.build
+      }));
+
+    bundle = function() {
+      return bundler.bundle()
+        .on('error', notify.onError('Bundle Error: <%= error.message %>'))
+        .pipe(source('main.js'))
+        .pipe(gulpif(speck.build.env.sourcemaps, streamify(sourcemaps.init({
+          loadMaps: true
+        }))))
+        .pipe(gulpif(speck.build.env.optimise, streamify(stripDebug())))
+        .pipe(gulpif(speck.build.env.optimise, streamify(uglify())))
+        .pipe(gulpif(speck.build.env.optimise, insert.prepend(
+          '/*\n' +
+          '* ' + speck.config.name + ', ' + speck.config.version + '(' + speck.config.currentRevision + ')\n' +
+          '* Don\'t edit this file directly.\n' +
+          '*/\n'
+        )))
+        .pipe(streamify(size({gzip: true, title: 'main.js'})))
+        .pipe(gulpif(speck.build.env.sourcemaps, streamify(sourcemaps.write('./'))))
+        .pipe(gulp.dest(speck.assets.build.js));
+
+    };
+
+    if (speck.build.flags.rebuild) {
+      bundler = watchify(bundler);
+      bundler.on('update', bundle);
+    }
+
+    return bundle();
+
+  });
+};
