@@ -9,7 +9,6 @@ module.exports = function(gulp, speck) {
         obj[name] = true;
         return obj;
       });
-    console.log(svgoPlugins);
 
     return gulp.src(speck.assets.src.images + '/**/*')
       .pipe(changed(speck.assets.build.images))
