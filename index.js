@@ -6,7 +6,7 @@ var gutil = require('gulp-util'),
   targets = require('./targets');
 
 function SpeckBuild(gulp, setup) {
-  
+
   this.gulp = gulp;
   this.config = this.setupConfig(setup);
   this.assets = this.setupAssetsConfig(
@@ -35,11 +35,9 @@ SpeckBuild.prototype.start = function() {
   this.gulp.task('build', [
     'js:main',
     'js:vendor',
-    'js:lint',
     'css:main',
-    'css:lint',
     'assets:iconify'
-  ]);
+  ].concat(this.build.flags.lint ? ['js:lint', 'css:lint'] : []));
 };
 
 SpeckBuild.prototype.setupConfig = function(setup) {
@@ -78,7 +76,8 @@ SpeckBuild.prototype.setupBuild = function() {
   var build = {
       flags: {
         rebuild: false,
-        livereload: false
+        livereload: false,
+        lint: !(process.argv.indexOf('--no-lint') > -1)
       }
     },
     targetName = 'development',
