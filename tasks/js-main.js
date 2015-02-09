@@ -4,6 +4,7 @@ module.exports = function(gulp, speck) {
       watchify = require('watchify'),
       envify = require('envify/custom'),
       to5ify = require('6to5ify'),
+      brfs = require('brfs'),
       collapse = require('bundle-collapser/plugin'),
       source = require('vinyl-source-stream'),
       streamify = require('gulp-streamify'),
@@ -28,7 +29,7 @@ module.exports = function(gulp, speck) {
       bundler.plugin(collapse);
     }
 
-    bundler.transform('brfs')
+    bundler.transform(brfs)
       .transform(envify({
         config: speck.config,
         build: speck.build
