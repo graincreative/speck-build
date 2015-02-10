@@ -3,7 +3,7 @@ module.exports = function(gulp, speck) {
     var jshint = require('gulp-jshint'),
       jscs = require('gulp-jscs');
 
-    return gulp.src([speck.assets.src.js + '/**/*'])
+    return gulp.src([speck.assets.src.js + '/**/*.js'])
       .pipe(jshint())
       .pipe(jshint.reporter('jshint-stylish'))
       .pipe(jscs());
