@@ -9,6 +9,11 @@ function SpeckBuild(gulp, setup) {
 
   this.gulp = gulp;
   this.config = this.setupConfig(setup);
+  this.entries = this.config.entries || {
+    css: ['main'],
+    bundle: ['main']
+  };
+
   this.assets = this.setupAssetsConfig(
     ['src', 'build'],
     ['images', 'js', 'css', 'fonts']
@@ -67,6 +72,7 @@ SpeckBuild.prototype.add = function(mdl) {
   mdl.call({}, this.gulp, {
     assets: this.assets,
     config: this.config,
+    entries: this.entries,
     build: this.build
   });
 };
