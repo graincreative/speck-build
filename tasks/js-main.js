@@ -41,7 +41,7 @@ module.exports = function(gulp, speck) {
       bundle = function() {
         return bundler.bundle()
         .on('error', notify.onError('Bundle Error: <%= error.message %>'))
-        .pipe(source(speck.assets.src.js + '/' + entry + '.js'))
+        .pipe(source(entry + '.js'))
         .pipe(gulpif(speck.build.env.sourcemaps, streamify(sourcemaps.init({
           loadMaps: true
         }))))
