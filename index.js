@@ -110,11 +110,11 @@ SpeckBuild.prototype.setupBuild = function() {
   if (process.argv.indexOf('--live') > -1) {
     build.flags.livereload = true;
     build.flags.rebuild = true;
-    this.watchAndBuild();
+    this.watchAndBuild(build);
     this.liveReload();
   } else if (process.argv.indexOf('--watch') > -1) {
     build.flags.rebuild = true;
-    this.watchAndBuild();
+    this.watchAndBuild(build);
   }
 
   gutil.log(
@@ -136,20 +136,28 @@ SpeckBuild.prototype.setupBuild = function() {
   return build;
 };
 
-SpeckBuild.prototype.liveReload = function() {
+SpeckBuild.prototype.liveReload = function(build) {
+  var _this = this;
   var server = livereload.listen({
     basePath: this.assets.directory
   });
 
-  this.gulp.watch([this.assets.build.js + '/main.js']).on('change', livereload.changed);
-  this.gulp.watch([this.assets.build.css + '/style.css']).on('change', livereload.changed);
+  this.gulp.watch(_.map(this.entries.js, function(fileName) {
+    return _this.assets.build.bundles + '/' + fileName;
+  })).on('change', livereload.changed);
+
+  this.gulp.watch(_.map(this.entries.css, function(fileName) {
+    return _this.assets.build.css + '/' + fileName;
+  })).on('change', livereload.changed);
 };
 
-SpeckBuild.prototype.watchAndBuild = function() {
-  this.gulp.watch([this.assets.src.js + '/**/*'], ['js:lint']);
+SpeckBuild.prototype.watchAndBuild = function(build) {
+  if(build.flags.lint) {
+    this.gulp.watch([this.assets.src.js + '/**/*'], ['js:lint']);
+  }
   this.gulp.watch(
     [this.assets.src.css + '/**/*'],
-    ['css:lint', 'css:main']
+    ['css:main'].concat(build.flags.lint ? ['css:lint'] : [])
   );
 };
 
