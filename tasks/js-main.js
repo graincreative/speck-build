@@ -3,7 +3,7 @@ module.exports = function(gulp, speck) {
     var browserify = require('browserify'),
     watchify = require('watchify'),
     envify = require('envify/custom'),
-    to5ify = require('6to5ify'),
+    babelify = require('babelify'),
     brfs = require('brfs'),
     collapse = require('bundle-collapser/plugin'),
     source = require('vinyl-source-stream'),
@@ -25,7 +25,7 @@ module.exports = function(gulp, speck) {
       bundler = browserify({
         debug: true
       })
-      .transform(to5ify)
+      .transform(babelify)
       .require(speck.assets.src.js + '/' + entry, {entry: true});
 
       if (speck.build.env.optimise) {
