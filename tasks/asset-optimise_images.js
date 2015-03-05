@@ -4,9 +4,9 @@ module.exports = function(gulp, speck) {
       pngquant = require('imagemin-pngquant'),
       changed = require('gulp-changed'),
       _ = require('lodash'),
-      svgoPlugins = _.map(speck.config.hasOwnProperty('svgoPlugins') ? speck.config.svgoPlugins : [], function(name) {
+      svgoPlugins = _.map(speck.config.hasOwnProperty('disableSvgoPlugins') ? speck.config.disableSvgoPlugins : [], function(name) {
         var obj = {};
-        obj[name] = true;
+        obj[name] = false;
         return obj;
       });
 
