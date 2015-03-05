@@ -37,11 +37,12 @@ SpeckBuild.prototype.start = function() {
   this.add(require('./tasks/distribute'));
   this.add(require('./tasks/help'));
 
+  this.gulp.task('assets', ['assets:iconify'])
+
   this.gulp.task('build', [
     'js:main',
     'js:vendor',
     'css:main',
-    'assets:iconify'
   ].concat(this.build.flags.lint ? ['js:lint', 'css:lint'] : []));
 };
 
@@ -49,7 +50,6 @@ SpeckBuild.prototype.setupConfig = function(setup) {
   var config = {};
   setup.call(config);
   config.currentRevision = git.short();
-
   return config;
 };
 

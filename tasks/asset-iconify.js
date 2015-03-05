@@ -3,10 +3,9 @@ module.exports = function(gulp, speck) {
     var iconify = require('gulp-iconify');
 
     iconify({
-      src: speck.assets.build.images + '/**/*.svg',
+      src: speck.assets.build.images + '/**/*.inc.svg',
       pngOutput: speck.assets.build.images + '/render',
-      cssOutput: speck.assets.build.css + '/assets',
-      scssOutput: speck.assets.build.css + '/trash'
+      cssOutput: speck.assets.build.css + '/assets'
     });
   });
 };
