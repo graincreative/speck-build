@@ -19,10 +19,10 @@
     "browserify": "^9.0.3",
     "browserify-shim": "^3.8.3",
     "bundle-collapser": "^1.1.4",
-    "envify": "^3.3.0",
+    "envify": "^3.3.1",
     "git-rev-sync": "^1.0.0",
     "gulp": "^3.8.11",
-    "gulp-changed": "^1.2.0",
+    "gulp-changed": "^1.2.1",
     "gulp-concat": "^2.5.2",
     "gulp-iconify": "^0.2.0",
     "gulp-if": "^1.2.5",
@@ -49,6 +49,7 @@
     "jshint-stylish": "^1.0.1",
     "lodash": "^3.5.0",
     "merge-stream": "^0.1.7",
+    "uglifyify": "^3.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^2.4.0"
   }

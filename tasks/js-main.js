@@ -10,6 +10,7 @@ module.exports = function(gulp, speck) {
     streamify = require('gulp-streamify'),
     sourcemaps = require('gulp-sourcemaps'),
     notify = require('gulp-notify'),
+    uglifyify = require('uglifyify'),
     uglify = require('gulp-uglify'),
     stripDebug = require('gulp-strip-debug'),
     size = require('gulp-size'),
@@ -28,15 +29,19 @@ module.exports = function(gulp, speck) {
       .transform(babelify)
       .require(speck.assets.src.js + '/' + entry, {entry: true});
 
-      if (speck.build.env.optimise) {
-        bundler.plugin(collapse);
-      }
-
       bundler.transform(brfs)
       .transform(envify({
         config: speck.config,
         build: speck.build
       }));
+
+      if (speck.build.env.optimise) {
+        bundler.plugin(collapse);
+        bundler.transform(uglifyify, {
+          global: true,
+          sourcemaps: !speck.build.env.sourcemaps
+        })
+      }
 
       bundle = function() {
         return bundler.bundle()

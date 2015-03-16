@@ -47,7 +47,7 @@ SpeckBuild.prototype.start = function() {
 };
 
 SpeckBuild.prototype.setupConfig = function(setup) {
-  var config = {};
+  var config = {vendorJS: []};
   setup.call(config);
   config.currentRevision = git.short();
   return config;
