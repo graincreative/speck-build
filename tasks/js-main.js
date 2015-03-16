@@ -49,10 +49,11 @@ module.exports = function(gulp, speck) {
         .pipe(gulpif(speck.build.env.optimise, streamify(uglify())))
         .pipe(gulpif(speck.build.env.optimise, insert.prepend(
           '/*\n' +
-          '* ' + speck.config.name + ', ' + speck.config.version + '(' + speck.config.currentRevision + ')\n' +
+          '* ' + speck.config.name + ', ' + speck.config.version + ' (' + speck.config.currentRevision + ')\n' +
+          '* ' + entry + '.js built ' + new Date().toISOString().substring(0, 10) + '\n' +
           '* Don\'t edit this file directly.\n' +
           '*/\n'
-          )))
+        )))
         .pipe(streamify(size({gzip: true, title: entry + '.js'})))
         .pipe(gulpif(speck.build.env.sourcemaps, streamify(sourcemaps.write('./'))))
         .pipe(gulp.dest(speck.assets.build.js));

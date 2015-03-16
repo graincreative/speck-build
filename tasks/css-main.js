@@ -8,6 +8,7 @@ module.exports = function(gulp, speck) {
     minifyCSS = require('gulp-minify-css'),
     streamify = require('gulp-streamify'),
     gulpif = require('gulp-if'),
+    insert = require('gulp-insert'),
     size = require('gulp-size'),
     merge = require('merge-stream'),
     _ = require('lodash'),
@@ -23,6 +24,13 @@ module.exports = function(gulp, speck) {
       .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
       .pipe(postcss([autoprefixer({browsers: ['> 1%', 'last 6 versions', 'Safari 5', 'Firefox ESR', 'Opera 12.1']})]))
       .pipe(gulpif(speck.build.env.optimise, minifyCSS({})))
+      .pipe(gulpif(speck.build.env.optimise, insert.prepend(
+        '/*\n' +
+        '* ' + speck.config.name + ', ' + speck.config.version + ' (' + speck.config.currentRevision + ')\n' +
+        '* ' + entry + '.css built ' + new Date().toISOString().substring(0, 10) + '\n' +
+        '* Don\'t edit this file directly.\n' +
+        '*/\n'
+      )))
       .pipe(streamify(size({gzip: true, title: entry + '.css'})))
       .pipe(gulp.dest(speck.assets.build.css));
     }
