@@ -5,7 +5,10 @@ module.exports = function(gulp, speck) {
     iconify({
       src: speck.assets.build.images + '/icons/**/*.svg',
       pngOutput: speck.assets.build.images + '/render',
-      cssOutput: speck.assets.build.css + '/assets'
+      cssOutput: speck.assets.build.css + '/assets',
+      svgoOptions: {
+      	enabled: false
+      }
     });
   });
 };
