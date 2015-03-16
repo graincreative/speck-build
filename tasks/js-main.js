@@ -13,6 +13,7 @@ module.exports = function(gulp, speck) {
     uglifyify = require('uglifyify'),
     uglify = require('gulp-uglify'),
     stripDebug = require('gulp-strip-debug'),
+    concatenify = require('concatenify'),
     size = require('gulp-size'),
     insert = require('gulp-insert'),
     merge = require('merge-stream'),
@@ -24,9 +25,15 @@ module.exports = function(gulp, speck) {
       bundler;
 
       bundler = browserify({
-        debug: true
+        debug: !speck.build.env.optimise,
+        fullPaths: !speck.build.env.optimise,
+        insertGlobals: !speck.build.env.optimise,
+        detectGlobals: speck.build.optimise,
+        packageCache: {},
+        cache: {}
       })
       .transform(babelify)
+      .transform(concatenify)
       .require(speck.assets.src.js + '/' + entry, {entry: true});
 
       bundler.transform(brfs)
