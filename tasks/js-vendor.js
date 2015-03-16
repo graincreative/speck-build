@@ -3,6 +3,7 @@ module.exports = function(gulp, speck) {
     var uglify = require('gulp-uglify'),
       gulpif = require('gulp-if'),
       insert = require('gulp-insert'),
+      size = require('gulp-size'),
       concat = require('gulp-concat');
 
     return gulp.src(speck.config.vendorJS)
@@ -15,6 +16,7 @@ module.exports = function(gulp, speck) {
         '* Don\'t edit this file directly.\n' +
         '*/\n'
       )))
+      .pipe(size({gzip: true, title: 'vendor.js'}))
       .pipe(gulp.dest(speck.assets.build.js));
   });
 };
