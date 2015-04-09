@@ -130,7 +130,7 @@ SpeckBuild.prototype.setupBuild = function() {
     colors.underline('LiveReload') + ': ' +
     onOrOff(build.flags.livereload) + ', ',
     colors.underline('Version') + ': ' +
-    colors.cyan(this.config.version + ' - ' + this.config.currentRevision) + colors.dim(')')
+    colors.cyan(this.config.version + '/' + this.config.currentRevision) + colors.dim(')')
   );
 
   return build;
@@ -139,15 +139,15 @@ SpeckBuild.prototype.setupBuild = function() {
 SpeckBuild.prototype.liveReload = function(build) {
   var _this = this;
   var server = livereload.listen({
-    basePath: this.assets.directory
+    basePath: this.assets.directory + '/build/'
   });
 
-  this.gulp.watch(_.map(this.entries.js, function(fileName) {
-    return _this.assets.build.bundles + '/' + fileName;
+  this.gulp.watch(_.map(this.entries.bundles, function(fileName) {
+    return _this.assets.build.js + '/' + fileName + '.js';
   })).on('change', livereload.changed);
 
   this.gulp.watch(_.map(this.entries.css, function(fileName) {
-    return _this.assets.build.css + '/' + fileName;
+    return _this.assets.build.css + '/' + fileName + '.css';
   })).on('change', livereload.changed);
 };
 
