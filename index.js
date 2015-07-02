@@ -28,9 +28,7 @@ function SpeckBuild(gulp, setup) {
 SpeckBuild.prototype.start = function() {
 
   this.add(require('./tasks/js-vendor'));
-  this.add(require('./tasks/js-lint'));
   this.add(require('./tasks/js-main'));
-  this.add(require('./tasks/css-lint'));
   this.add(require('./tasks/css-main'));
   this.add(require('./tasks/asset-optimise_images'));
   this.add(require('./tasks/asset-iconify'));
@@ -43,7 +41,7 @@ SpeckBuild.prototype.start = function() {
     'js:main',
     'js:vendor',
     'css:main',
-  ].concat(this.build.flags.lint ? ['js:lint', 'css:lint'] : []));
+  ]);
 };
 
 SpeckBuild.prototype.setupConfig = function(setup) {
@@ -82,8 +80,7 @@ SpeckBuild.prototype.setupBuild = function() {
   var build = {
       flags: {
         rebuild: false,
-        livereload: false,
-        lint: !(process.argv.indexOf('--no-lint') > -1)
+        livereload: false
       }
     },
     targetName = 'development',
@@ -152,12 +149,9 @@ SpeckBuild.prototype.liveReload = function(build) {
 };
 
 SpeckBuild.prototype.watchAndBuild = function(build) {
-  if(build.flags.lint) {
-    this.gulp.watch([this.assets.src.js + '/**/*'], ['js:lint']);
-  }
   this.gulp.watch(
     [this.assets.src.css + '/**/*'],
-    ['css:main'].concat(build.flags.lint ? ['css:lint'] : [])
+    ['css:main']
   );
 };
 
