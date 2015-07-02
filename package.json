@@ -1,6 +1,6 @@
 {
   "name": "speck-build",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Gulp for Speck",
   "main": "index.js",
   "scripts": {
